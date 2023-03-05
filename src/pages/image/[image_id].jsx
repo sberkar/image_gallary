@@ -1,10 +1,11 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState, useRef } from "react";
-import Image from "../components/Image";
+import Image from "next/image";
 import Footer from "../components/Footer";
 import Nav from "../components/Nav";
 import Loading from "../components/Loading";
+import ImageElement from "../components/Image";
 
 export default function ImageID(){
     let router = useRouter()
@@ -97,13 +98,13 @@ export default function ImageID(){
             {loading?<Loading />:
             <div className="flex">
                 <div className="w-1/2">
-                    <img className="rounded" src={imageData.webformatURL} alt="image" />
+                    <Image className="rounded" src={imageData.webformatURL} alt="image" />
                 </div>
                 <div>
                     <h1 className="text-4xl font-medium">Photo By {imageData.user}</h1>
                     <div className="my-2">
                         <a className="flex items-center " href={`https://pixabay.com/users/${imageData.user}-${imageData.user_id}`}>
-                        <img className="h-9 w-9 rounded-full mr-2" src={imageData.userImageURL} alt={imageData.user} />
+                        <Image className="h-9 w-9 rounded-full mr-2" src={imageData.userImageURL} alt={imageData.user} />
                         <span className="tex-lg font-medium">{imageData.user}</span>
                         </a>
                     </div>
@@ -128,7 +129,7 @@ No attribution required</p>
                             <span id="social-name" className="">Share</span>
                             <div className={`${social?"block":"hidden"} absolute bg-white  px-2 py-1 top-[-50px] shadow`}>
                                 <div className="flex justify-evenly">
-                                    {shareOptions.map(shareOption => <div >
+                                    {shareOptions.map(shareOption => <div key={shareOption.name}>
                                         {shareOption.name != "copy-outline"?<a className={`text-[${shareOption.color}] mx-2 text-xl`} href={shareOption.link}>
                                             <ion-icon name={shareOption.name}></ion-icon>
                                         </a>:<button onClick={() => copyToClipBoard(shareOption.link)} className={`relative text-[${shareOption.color} mx-2 text-xl]`}>
@@ -153,8 +154,8 @@ No attribution required</p>
             <div>
                 <h2 className="my-8 text-3xl font-medium">More Like This</h2>
                 <div className="flex">
-                    {relatedLoading?<Loading />:relatedImages.map(relatedImage => <div>
-                        {relatedImage.id == image_id ?"":<Image image={relatedImage} />}
+                    {relatedLoading?<Loading />:relatedImages.map(relatedImage => <div key={relatedImage.id}>
+                        {relatedImage.id == image_id ?"":<ImageElement image={relatedImage} />}
                     </div>)}
                 </div>
             </div>

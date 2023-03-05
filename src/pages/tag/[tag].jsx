@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Footer from "../components/Footer";
-import Image from "../components/Image";
+import ImageElement from "../components/Image";
 import Loading from "../components/Loading";
 import Nav from "../components/Nav";
 
@@ -30,7 +30,7 @@ export default function Tag(){
         <Nav />
         <main className="px-10 my-10">
             {loading?<Loading />:<div className="grid grid-cols-4">
-                    {images.map(image => <Image key={image.id} image={image} />)}
+                    {images.map(image => <ImageElement key={image.id} image={image} />)}
                 </div>}
         </main>
         <Footer />

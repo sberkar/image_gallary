@@ -1,4 +1,5 @@
 import { useAuth } from "@/context/auth"
+import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
 
@@ -9,7 +10,7 @@ export default function Nav(){
         <nav className="px-8 py-4 md:flex md:items-center md:justify-between">
             <div className="md:w-1/4">
                 <Link href="/"> 
-                <img src="/logo.svg" alt="logo" />
+                <Image src="/logo.svg" alt="logo" />
                 </Link>
             </div>
             <div className="">
@@ -26,7 +27,7 @@ export default function Nav(){
                         <Link className="block font-medium text-md py-2 px-4 rounded-md border border-black bg-primary" href="/login">Login</Link>
                     </li>:<li className="mx-4">
                             <Link href="/profile"> 
-                                <img src={currentUser.photoURL} className="rounded-full h-[48px] w-[48px]" alt="profile" />
+                                <Image src={currentUser.photoURL} className="rounded-full h-[48px] w-[48px]" alt="profile" />
                             </Link>
                         </li>}
                 </ul>

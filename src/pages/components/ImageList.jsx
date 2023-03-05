@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import Image from "./Image"
+import ImageElement from "./Image"
 
 export default function ImageList(){
     const [images, setImages] = useState([])
@@ -15,6 +15,6 @@ export default function ImageList(){
     }, [])
 
     return <div className="grid grid-cols-4 gap-1 px-8">
-        {images.length && !loading && images.map(image => <Image image={image} />)}
+        {images.length && !loading && images.map(image => <ImageElement key={image.id} image={image} />)}
     </div>
 }

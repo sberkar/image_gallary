@@ -2,9 +2,10 @@ import { useAuth } from "@/context/auth";
 import { collection, getDocs, limit, query, where } from "firebase/firestore";
 import Head from "next/head";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Footer from "../components/Footer";
-import Image from "../components/Image";
+import Image from "next/image";
+import ImageElement from "../components/Image";
 import Nav from "../components/Nav";
 import ProfileSideBar from "../components/ProfileSideBar";
 import { db } from "@/firebase_config.js";
@@ -12,17 +13,18 @@ import { db } from "@/firebase_config.js";
 export default function Favourites(){
     const { currentUser } = useAuth()
     const router = useRouter();
-    if(!currentUser) return router.push("/login")
 
     const [favs, setFavs] = useState([]);
     const [loading, setLoading] = useState(true)
-    useState(() => {
+    useEffect(() => {
+        if(!currentUser) return
         let q = query(collection(db, "favs"), where("userId", "==", currentUser.uid), limit(20))
         getDocs(q).then(querySnaps => {
             setFavs(querySnaps.docs.map(doc => doc.data()))
             setLoading(false)
         }).catch(err => console.log(err))
-    }, [currentUser.uid])
+    }, [currentUser])
+    if(!currentUser) return router.push("/login")
 
     return <>
         <Head>
@@ -35,9 +37,9 @@ export default function Favourites(){
                     {!loading ? <div className="w-full">
                             {favs.length < 1?<div className="w-full flex justify-center items-center">
                                 <div className="">
-                                    <img src="/not_found.svg" className="h-[60vh]" alt="nothing here" />
+                                    <Image src="/not_found.svg" className="h-[60vh]" alt="nothing here" />
                                 </div>
-                            </div>:favs.map(fav => <Image image={fav} />)} 
+                            </div>:favs.map(fav => <ImageElement key={fav.id} image={fav} />)} 
                         </div>:<div>Loading....</div>}
                 </div>
             </main>
