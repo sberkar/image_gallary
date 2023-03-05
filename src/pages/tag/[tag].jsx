@@ -30,7 +30,7 @@ export default function Tag(){
         <Nav />
         <main className="px-10 my-10">
             {loading?<Loading />:<div className="grid grid-cols-4">
-                    {images.map(image => <Image image={image} />)}
+                    {images.map(image => <Image key={image.id} image={image} />)}
                 </div>}
         </main>
         <Footer />
