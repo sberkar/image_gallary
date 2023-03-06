@@ -5,11 +5,11 @@ import Image from "next/image";
 import Footer from "../components/Footer";
 import Nav from "../components/Nav";
 import Loading from "../components/Loading";
-import ImageElement from "../components/Image";
+import Video from "../components/Video";
 
 export default function ImageID(){
     let router = useRouter()
-    let { image_id } = router.query;
+    let { video_id } = router.query;
 
     let shareOptions = [{
         name: "logo-facebook",
@@ -25,8 +25,8 @@ export default function ImageID(){
         link: `${window.location.href}`
     }]
 
-    const [imageData, setImageData] = useState({});
-    const [relatedImages, setRelatedImages] = useState([])
+    const [videoData, setVideoData] = useState({});
+    const [relatedVideos, setRelatedVideos] = useState([])
     const [loading, setLoading] = useState(true)
     const [relatedLoading, setRelatedLoading] = useState(true)
     const [copied, setCopied] = useState(false)
@@ -34,34 +34,34 @@ export default function ImageID(){
 
     const downloader = useRef()
     useEffect(() => {
-        fetch(`https://pixabay.com/api/?key=${process.env.NEXT_PUBLIC_PIXA_API}&id=${image_id}&image_type=photo&pretty=true`).then(res => {
+        fetch(`https://pixabay.com/api/videos/?key=${process.env.NEXT_PUBLIC_PIXA_API}&id=${video_id}&pretty=true`).then(res => {
             res.json().then(data => {
-                setImageData(data.hits[0])
+                setVideoData(data.hits[0])
                 setLoading(false)
             })
         }).catch(err => console.log(err))
-    }, [image_id])
+    }, [video_id])
 
     useEffect(() => {
-        if(imageData.tags == undefined) return
-        let url = `https://pixabay.com/api/?key=${process.env.NEXT_PUBLIC_PIXA_API}&q=${imageData.tags.split(",")[0]}&per_page=6&image_type=photo&pretty=true`;
+        if(videoData.tags == undefined) return
+        let url = `https://pixabay.com/api/videos/?key=${process.env.NEXT_PUBLIC_PIXA_API}&q=${videoData.tags.split(",")[0]}&per_page=5&pretty=true`;
         fetch(encodeURI(url)).then(res => {
             res.json().then(data => {
-                setRelatedImages(data.hits)
+                setRelatedVideos(data.hits)
                 setRelatedLoading(false)
             })
             .catch(err => console.log(err))
         }).catch(err => console.log(err))
-    }, [imageData])
+    }, [videoData])
 
-    function downloadImage(url){
+    function downloadVideo(url){
         fetch(url).then(res => {
             res.blob().then(blob => {
-                let tempURL = URL.createObjectURL(blob)
-                downloader.current.href = tempURL;
-                downloader.current.download = url.replace(/^.*[\\\/]/, '');
+                let href = URL.createObjectURL(blob)
+                downloader.current.href = href;
+                downloader.current.download = `${videoData.id}.mp4`
                 downloader.current.click()
-                URL.revokeObjectURL(tempURL)
+                URL.revokeObjectURL(href)
                 downloader.current.remove()
             }).catch(err => console.log(err))
         }).catch(err => console.log(err))
@@ -91,33 +91,33 @@ export default function ImageID(){
     }
     return <>
         <Head>
-            <title>Photo by {imageData.user} - Colrs Image</title>
+            <title>Video by {videoData.user} - Colrs Image</title>
         </Head>
         <Nav />
         <main className="px-8 my-4">
             {loading?<Loading />:
             <div className="flex">
                 <div className="w-1/2">
-                    <img className="rounded" src={imageData.webformatURL} alt="image" />
+                    <video controls controlsList="nodownload" className="rounded w-11/12" src={videoData.videos.large.url}></video>
                 </div>
                 <div>
-                    <h1 className="text-4xl font-medium">Photo By {imageData.user}</h1>
+                    <h1 className="text-4xl font-medium">Video By {videoData.user}</h1>
                     <div className="my-2">
-                        <a className="flex items-center " href={`https://pixabay.com/users/${imageData.user}-${imageData.user_id}`}>
-                        <Image width="36" height="36" className="rounded-full mr-2" src={imageData.userImageURL} alt={imageData.user} />
-                        <span className="tex-lg font-medium">{imageData.user}</span>
+                        <a className="flex items-center " href={`https://pixabay.com/users/${videoData.user}-${videoData.user_id}`}>
+                        <Image width="36" height="36" className="rounded-full mr-2" src={videoData.userImageURL} alt={videoData.user} />
+                        <span className="tex-lg font-medium">{videoData.user}</span>
                         </a>
                     </div>
-                    <p className="my-2 font-medium">Likes - {imageData.likes}</p>
-                    <p className="my-2 font-medium">Downloads - {imageData.downloads}</p>
-                    <p className="my-2 flex">{imageData.tags.split(",").map(tag => <a href={`/tag/${tag}`} key={tag} className="px-2 py-1 bg-slate-300 rounded-xl first:ml-0 mx-2 block">{tag}</a>)}</p>
+                    <p className="my-2 font-medium">Likes - {videoData.likes}</p>
+                    <p className="my-2 font-medium">Downloads - {videoData.downloads}</p>
+                    <p className="my-2 flex">{videoData.tags.split(",").map(tag => <a href={`/tag/${tag}`} key={tag} className="px-2 py-1 bg-slate-300 rounded-xl first:ml-0 mx-2 block">{tag}</a>)}</p>
                     <div className="p-4 my-8 bg-slate-100 rounded">
                         <a href="https://pixabay.com/service/terms/" className="text-xl hover:underline font-semibold">Pixabay License</a>
                         <p className="leading-[95%] text-slate-600">Free to use under the Pixabay license<br />
 No attribution required</p>
                     </div>
                     <div className="flex items-center">
-                        <button className="px-4 py-2 text-white hover:opacity-90  flex items-center bg-primary rounded" onClick={() => downloadImage(imageData.webformatURL)} >
+                        <button className="px-4 py-2 text-white hover:opacity-90  flex items-center bg-primary rounded" onClick={() => downloadVideo(videoData.videos.large.url)} >
                             <span className="text-2xl mr-2">
                                 <ion-icon name="download-outline"></ion-icon> 
                             </span> 
@@ -153,10 +153,10 @@ No attribution required</p>
 }
             <div>
                 <h2 className="my-8 text-3xl font-medium">More Like This</h2>
-                <div className="flex">
-                    {relatedLoading?<Loading />:relatedImages.map(relatedImage => <div key={relatedImage.id}>
-                        {relatedImage.id == image_id ?"":<ImageElement image={relatedImage} />}
-                    </div>)}
+                <div className="grid grid-cols-5 gap-1">
+                    {relatedLoading?<Loading />:relatedVideos.map(relatedvideo => (relatedvideo.id === video_id?"":<div key={relatedvideo.id}>
+                        <Video video={relatedvideo} height="170" />
+                    </div>))}
                 </div>
             </div>
         </main> 
