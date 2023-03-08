@@ -6,14 +6,10 @@ import Footer from "../../components/Footer";
 import Nav from "../../components/Nav";
 import Loading from "../../components/Loading";
 import ImageElement from "../../components/Image";
-import { useAuth } from "@/context/auth";
-import Link from "next/link";
 
 export default function ImageID(){
     let router = useRouter()
     let { image_id } = router.query;
-
-    let { isLoggedIn } = useAuth()
 
     let shareOptions = [{
         name: "logo-facebook",
@@ -48,7 +44,7 @@ export default function ImageID(){
 
     useEffect(() => {
         if(imageData.tags == undefined) return
-        let url = `https://pixabay.com/api/?key=${process.env.NEXT_PUBLIC_PIXA_API}&q=${imageData.tags.split(",")[0]}&image_type=${imageData.type}&per_page=6&image_type=photo&pretty=true`;
+        let url = `https://pixabay.com/api/?key=${process.env.NEXT_PUBLIC_PIXA_API}&q=${imageData.tags.split(",")[0]}&image_type=${imageData.type}&per_page=4&image_type=photo&pretty=true`;
         fetch(encodeURI(url)).then(res => {
             res.json().then(data => {
                 setRelatedImages(data.hits)
@@ -101,7 +97,7 @@ export default function ImageID(){
             {loading?<Loading />:
             <div className="flex flex-col md:flex-row">
                 <div className="w-full md:w-1/2">
-                    <img className="md:rounded w-screen md:w-auto" src={imageData.webformatURL} alt="image" />
+                    <img className="md:rounded w-full md:w-auto" src={imageData.webformatURL} alt="image" />
                 </div>
                 <div className="px-2">
                     <h1 className="text-3xl md:text-4xl font-medium">Photo By {imageData.user}</h1>
@@ -111,8 +107,8 @@ export default function ImageID(){
                         <span className="text-lg font-medium">{imageData.user}</span>
                         </a>
                     </div>
-                    <p className="my-2 text-xl font-medium">Likes - {imageData.likes}</p>
-                    <p className="my-2 text-xl font-medium">Downloads - {imageData.downloads}</p>
+                    <p className="my-2 text-xl md:text-md font-medium">Likes - {imageData.likes}</p>
+                    <p className="my-2 text-xl md:text-md font-medium">Downloads - {imageData.downloads}</p>
                     <p className="my-2 flex">{imageData.tags.split(",").map(tag => <a href={`/tag/${tag}`} key={tag} className="px-2 py-1 bg-slate-300 rounded-xl first:ml-0 mx-2 block">{tag}</a>)}</p>
                     <div className="p-4 my-8 bg-slate-100 rounded">
                         <a href="https://pixabay.com/service/terms/" className="text-xl hover:underline font-semibold">Pixabay License</a>
@@ -133,9 +129,9 @@ No attribution required</p>
                             <div className={`${social?"block":"hidden"} absolute bg-white  px-2 py-1 top-[-50px] shadow`}>
                                 <div className="flex justify-evenly">
                                     {shareOptions.map(shareOption => <div key={shareOption.name}>
-                                        {shareOption.name != "copy-outline"?<a className={`text-[${shareOption.color}] mx-2 text-xl`} href={shareOption.link}>
+                                        {shareOption.name != "copy-outline"?<a className={`text-[${shareOption.color}] mx-2 text-lg md:text-xl`} href={shareOption.link}>
                                             <ion-icon name={shareOption.name}></ion-icon>
-                                        </a>:<button onClick={() => copyToClipBoard(shareOption.link)} className={`relative text-[${shareOption.color} mx-2 text-xl]`}>
+                                        </a>:<button onClick={() => copyToClipBoard(shareOption.link)} className={`relative text-[${shareOption.color} mx-2 text-lg md:text-xl]`}>
                                             <ion-icon name={shareOption.name}></ion-icon>
                                             <span className="absolute top-[30px] bg-white p-2 shadow rounded">{copied?"copied": ""}</span>
                                         </button>}
@@ -143,25 +139,14 @@ No attribution required</p>
                                 </div>
                             </div>
                         </button>
-                        {isLoggedIn?<button className="flex text-primary font-medium items-center mx-2">
-                            <span className="text-2xl mr-2">
-                                <ion-icon name="heart-outline"></ion-icon>
-                            </span>
-                            <span>Favourite</span>
-                        </button>:<Link href="/login" className="flex text-primary font-medium items-center mx-2">
-                            <span className="text-2xl mr-2">
-                                <ion-icon name="heart-outline"></ion-icon>
-                            </span>
-                            <span>Favourite</span>
-                        </Link>}
                     </div>
                 </div>
             </div>
 }
             <div>
                 <h2 className="my-8 text-3xl font-medium">More Like This</h2>
-                <div className="flex">
-                    {relatedLoading?<Loading />:relatedImages.map(relatedImage => <div key={relatedImage.id}>
+                <div className="grid gap-y-1 grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+                    {relatedLoading?<Loading />:relatedImages.map(relatedImage => <div className="h-full empty:hidden" key={relatedImage.id}>
                         {relatedImage.id == image_id ?"":<ImageElement image={relatedImage} />}
                     </div>)}
                 </div>
