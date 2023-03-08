@@ -1,9 +1,9 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
-import Footer from "./components/Footer";
-import Loading from "./components/Loading";
-import Nav from "./components/Nav";
-import Video from "./components/Video"
+import Footer from "../components/Footer";
+import Loading from "../components/Loading";
+import Nav from "../components/Nav";
+import Video from "../components/Video"
 
 export default function Videoes(){
     const [Videoes, setVideoes] = useState([]);

@@ -3,11 +3,11 @@ import { collection, getDocs, limit, query, where } from "firebase/firestore";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Footer from "../components/Footer";
+import Footer from "../../components/Footer";
 import Image from "next/image";
-import ImageElement from "../components/Image";
-import Nav from "../components/Nav";
-import ProfileSideBar from "../components/ProfileSideBar";
+import ImageElement from "../../components/Image";
+import Nav from "../../components/Nav";
+import ProfileSideBar from "../../components/ProfileSideBar";
 import { db } from "@/firebase_config.js";
 
 export default function Favourites(){
@@ -24,7 +24,8 @@ export default function Favourites(){
             setLoading(false)
         }).catch(err => console.log(err))
     }, [currentUser])
-    if(!currentUser) return router.push("/login")
+
+    if(!currentUser) return window.location.replace("/login")
 
     return <>
         <Head>
@@ -34,12 +35,12 @@ export default function Favourites(){
             <main className="h-[75vh] px-8 my-4 md:flex">
                 <ProfileSideBar />
                 <div className="w-full flex flex-col">
-                    {!loading ? <div className="w-full">
+                    {!loading ? <div className="w-full grid grid-cols-3 gap-1 px-4">
                             {favs.length < 1?<div className="w-full flex justify-center items-center">
                                 <div className="">
-                                    <Image src="/not_found.svg" className="h-[60vh]" alt="nothing here" />
+                                    <img src="/not_found.svg" className="h-[60vh]" alt="nothing here" />
                                 </div>
-                            </div>:favs.map(fav => <ImageElement key={fav.id} image={fav} />)} 
+                            </div>:favs.map(fav => <ImageElement isFaved={fav} key={fav.id} image={fav} />)} 
                         </div>:<div>Loading....</div>}
                 </div>
             </main>

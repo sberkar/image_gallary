@@ -2,10 +2,10 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
-import Footer from "../components/Footer";
-import Nav from "../components/Nav";
-import Loading from "../components/Loading";
-import Video from "../components/Video";
+import Footer from "../../components/Footer";
+import Nav from "../../components/Nav";
+import Loading from "../../components/Loading";
+import Video from "../../components/Video";
 
 export default function ImageID(){
     let router = useRouter()

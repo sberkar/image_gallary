@@ -11,11 +11,13 @@ export function useAuth(){
 export default function AuthContextProvider({ children }){
     const [currentUser, setCurrentUser] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isLoggedIn, setIsLoggedIn] = useState(false)
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, user => {
             if(user) {
                 setCurrentUser(user)
+                setIsLoggedIn(true)
             }
             setLoading(false)
         })
@@ -32,7 +34,9 @@ export default function AuthContextProvider({ children }){
     const value = {
         currentUser,
         login,
-        logout
+        logout,
+        isLoggedIn,
+        setIsLoggedIn
     }
     return <AuthContext.Provider value={value}>
         {!loading && children}

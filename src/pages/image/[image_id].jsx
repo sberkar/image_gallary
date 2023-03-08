@@ -2,14 +2,18 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState, useRef } from "react";
 import Image from "next/image";
-import Footer from "../components/Footer";
-import Nav from "../components/Nav";
-import Loading from "../components/Loading";
-import ImageElement from "../components/Image";
+import Footer from "../../components/Footer";
+import Nav from "../../components/Nav";
+import Loading from "../../components/Loading";
+import ImageElement from "../../components/Image";
+import { useAuth } from "@/context/auth";
+import Link from "next/link";
 
 export default function ImageID(){
     let router = useRouter()
     let { image_id } = router.query;
+
+    let { isLoggedIn } = useAuth()
 
     let shareOptions = [{
         name: "logo-facebook",
@@ -44,7 +48,7 @@ export default function ImageID(){
 
     useEffect(() => {
         if(imageData.tags == undefined) return
-        let url = `https://pixabay.com/api/?key=${process.env.NEXT_PUBLIC_PIXA_API}&q=${imageData.tags.split(",")[0]}&per_page=6&image_type=photo&pretty=true`;
+        let url = `https://pixabay.com/api/?key=${process.env.NEXT_PUBLIC_PIXA_API}&q=${imageData.tags.split(",")[0]}&image_type=${imageData.type}&per_page=6&image_type=photo&pretty=true`;
         fetch(encodeURI(url)).then(res => {
             res.json().then(data => {
                 setRelatedImages(data.hits)
@@ -72,7 +76,6 @@ export default function ImageID(){
         }, 2000)
     }
     window.addEventListener("click", (e) => {
-        console.log(e.target.id)
         if(e.target.id === "social-icon"){
             return setSocial(!social)
         }
@@ -94,22 +97,22 @@ export default function ImageID(){
             <title>Photo by {imageData.user} - Colrs Image</title>
         </Head>
         <Nav />
-        <main className="px-8 my-4">
+        <main className="px-0 md:px-8 my-2 md:my-4">
             {loading?<Loading />:
-            <div className="flex">
-                <div className="w-1/2">
-                    <img className="rounded" src={imageData.webformatURL} alt="image" />
+            <div className="flex flex-col md:flex-row">
+                <div className="w-full md:w-1/2">
+                    <img className="md:rounded w-screen md:w-auto" src={imageData.webformatURL} alt="image" />
                 </div>
-                <div>
-                    <h1 className="text-4xl font-medium">Photo By {imageData.user}</h1>
+                <div className="px-2">
+                    <h1 className="text-3xl md:text-4xl font-medium">Photo By {imageData.user}</h1>
                     <div className="my-2">
                         <a className="flex items-center " href={`https://pixabay.com/users/${imageData.user}-${imageData.user_id}`}>
                         <Image width="36" height="36" className="rounded-full mr-2" src={imageData.userImageURL} alt={imageData.user} />
-                        <span className="tex-lg font-medium">{imageData.user}</span>
+                        <span className="text-lg font-medium">{imageData.user}</span>
                         </a>
                     </div>
-                    <p className="my-2 font-medium">Likes - {imageData.likes}</p>
-                    <p className="my-2 font-medium">Downloads - {imageData.downloads}</p>
+                    <p className="my-2 text-xl font-medium">Likes - {imageData.likes}</p>
+                    <p className="my-2 text-xl font-medium">Downloads - {imageData.downloads}</p>
                     <p className="my-2 flex">{imageData.tags.split(",").map(tag => <a href={`/tag/${tag}`} key={tag} className="px-2 py-1 bg-slate-300 rounded-xl first:ml-0 mx-2 block">{tag}</a>)}</p>
                     <div className="p-4 my-8 bg-slate-100 rounded">
                         <a href="https://pixabay.com/service/terms/" className="text-xl hover:underline font-semibold">Pixabay License</a>
@@ -140,13 +143,17 @@ No attribution required</p>
                                 </div>
                             </div>
                         </button>
-                        <button className="flex text-primary font-medium items-center mx-2">
+                        {isLoggedIn?<button className="flex text-primary font-medium items-center mx-2">
                             <span className="text-2xl mr-2">
                                 <ion-icon name="heart-outline"></ion-icon>
                             </span>
                             <span>Favourite</span>
-                            
-                        </button>
+                        </button>:<Link href="/login" className="flex text-primary font-medium items-center mx-2">
+                            <span className="text-2xl mr-2">
+                                <ion-icon name="heart-outline"></ion-icon>
+                            </span>
+                            <span>Favourite</span>
+                        </Link>}
                     </div>
                 </div>
             </div>

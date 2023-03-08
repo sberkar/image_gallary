@@ -1,10 +1,10 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import Footer from "../components/Footer";
-import ImageElement from "../components/Image";
-import Loading from "../components/Loading";
-import Nav from "../components/Nav";
+import Footer from "../../components/Footer";
+import ImageElement from "../../components/Image";
+import Loading from "../../components/Loading";
+import Nav from "../../components/Nav";
 
 export default function Tag(){
     let router = useRouter()

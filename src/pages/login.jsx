@@ -1,16 +1,19 @@
 import Head from "next/head"
-import Footer from "./components/Footer"
-import Nav from "./components/Nav"
+import Footer from "../components/Footer"
+import Nav from "../components/Nav"
 import { useAuth } from "../context/auth";
 import { useRouter } from "next/router";
 
 
 export default function Login(){
     const router = useRouter()
-    const { login } = useAuth()
+    const { login, currentUser } = useAuth()
+
+    if((currentUser != undefined)) return window.location.replace("/")
+
     function handleLogin(){
         login().then(() => {
-            router.push("/")
+            window.location.replace("/")
         }).catch(err => console.log(err))
     }
     return <>
