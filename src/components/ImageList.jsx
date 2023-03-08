@@ -29,6 +29,6 @@ export default function ImageList(){
     }, [])
 
     return <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-1 px-0 md:px-8">
-        {images.length && !loading && !favLoading && images.map(image => <ImageElement image={image} isLoggedIn={isLoggedIn} isFaved={favImages.find(FI => FI.id == image.id)} />)}
+        {images.length && !loading && !favLoading && images.map(image => <ImageElement key={image.id} image={image} isLoggedIn={isLoggedIn} isFaved={favImages.find(FI => FI.id == image.id)} />)}
     </div>
 }
