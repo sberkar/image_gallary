@@ -107,8 +107,8 @@ export default function ImageID(){
                         <span className="text-lg font-medium">{imageData.user}</span>
                         </a>
                     </div>
-                    <p className="my-2 text-xl md:text-md font-medium">Likes - {imageData.likes}</p>
-                    <p className="my-2 text-xl md:text-md font-medium">Downloads - {imageData.downloads}</p>
+                    <p className="my-2 text-lg md:text-md">Likes - {imageData.likes}</p>
+                    <p className="my-2 text-lg md:text-md">Downloads - {imageData.downloads}</p>
                     <p className="my-2 flex">{imageData.tags.split(",").map(tag => <a href={`/tag/${tag}`} key={tag} className="px-2 py-1 bg-slate-300 rounded-xl first:ml-0 mx-2 block">{tag}</a>)}</p>
                     <div className="p-4 my-8 bg-slate-100 rounded">
                         <a href="https://pixabay.com/service/terms/" className="text-xl hover:underline font-semibold">Pixabay License</a>
