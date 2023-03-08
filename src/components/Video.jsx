@@ -14,7 +14,7 @@ export default function Video({ video, width, height }){
     return <div className="relative" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
        <Link href={`/video/${video.id}`} className="block"> 
         <div>
-            <video src={video.videos.tiny.url} height={height} className={`h-[${height?"":"230px"}]`} ></video>
+            <video src={video.videos.tiny.url} height={height} className={`h-[${height?"":"230px"}] w-full md:w-auto`} ></video>
         </div>
         <div className={`absolute bottom-0 ${show} w-full transition-all duration-75 ease-in-out`}>
             <div className="flex items-center justify-between p-2 w-full bg-gradient-to-b from-light-white to-slate-900">

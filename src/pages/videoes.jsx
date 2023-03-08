@@ -27,7 +27,7 @@ export default function Videoes(){
         </Head>
         <Nav />
         <main>
-            {loading?<Loading />:<div className="grid grid-cols-4 gap-1">
+            {loading?<Loading />:<div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-1">
                     {Videoes.map(video => <Video key={video.id} video={video} />)}
                 </div>}
         </main>

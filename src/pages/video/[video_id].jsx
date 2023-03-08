@@ -44,7 +44,7 @@ export default function ImageID(){
 
     useEffect(() => {
         if(videoData.tags == undefined) return
-        let url = `https://pixabay.com/api/videos/?key=${process.env.NEXT_PUBLIC_PIXA_API}&q=${videoData.tags.split(",")[0]}&per_page=5&pretty=true`;
+        let url = `https://pixabay.com/api/videos/?key=${process.env.NEXT_PUBLIC_PIXA_API}&q=${videoData.tags.split(",")[0]}&per_page=4&pretty=true`;
         fetch(encodeURI(url)).then(res => {
             res.json().then(data => {
                 setRelatedVideos(data.hits)
@@ -94,14 +94,14 @@ export default function ImageID(){
             <title>Video by {videoData.user} - Colrs Image</title>
         </Head>
         <Nav />
-        <main className="px-8 my-4">
+        <main className="px-0 md:px-8 my-4">
             {loading?<Loading />:
-            <div className="flex">
-                <div className="w-1/2">
-                    <video controls controlsList="nodownload" className="rounded w-11/12" src={videoData.videos.large.url}></video>
+            <div className="flex flex-col md:flex-row">
+                <div className="w-full md:w-1/2">
+                    <video controls controlsList="nodownload" className="md:rounded w-full md:w-11/12" src={videoData.videos.large.url}></video>
                 </div>
-                <div>
-                    <h1 className="text-4xl font-medium">Video By {videoData.user}</h1>
+                <div className="px-2">
+                    <h1 className="text-3xl md:text-4xl font-medium">Video By {videoData.user}</h1>
                     <div className="my-2">
                         <a className="flex items-center " href={`https://pixabay.com/users/${videoData.user}-${videoData.user_id}`}>
                         <Image width="36" height="36" className="rounded-full mr-2" src={videoData.userImageURL} alt={videoData.user} />
@@ -140,20 +140,13 @@ No attribution required</p>
                                 </div>
                             </div>
                         </button>
-                        <button className="flex text-primary font-medium items-center mx-2">
-                            <span className="text-2xl mr-2">
-                                <ion-icon name="heart-outline"></ion-icon>
-                            </span>
-                            <span>Favourite</span>
-                            
-                        </button>
                     </div>
                 </div>
             </div>
 }
             <div>
                 <h2 className="my-8 text-3xl font-medium">More Like This</h2>
-                <div className="grid grid-cols-5 gap-1">
+                <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-cols-5 gap-1">
                     {relatedLoading?<Loading />:relatedVideos.map(relatedvideo => (relatedvideo.id === video_id?"":<div key={relatedvideo.id}>
                         <Video video={relatedvideo} height="170" />
                     </div>))}
