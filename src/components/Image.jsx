@@ -29,7 +29,7 @@ export default function ImageElement({ image, isLoggedIn, isFaved }){
     }
     console.log(isFaved)
 
-    return <div className="relative w-full flex flex-col items-center justify-center" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+    return <div className="relative w-full md:w-auto flex flex-col items-center justify-center" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
        <Link href={`/image/${image.id}`} className="block"> 
         <div>
             <img src={image.webformatURL} loading="lazy" className="h-[250px]" alt="images" />
