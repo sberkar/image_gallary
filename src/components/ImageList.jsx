@@ -20,7 +20,10 @@ export default function ImageList(){
             })
         }
         ).catch(err => console.log(err))
-        
+        if(!isLoggedIn){
+            setFavLoading(false)
+            return
+        }
         let q = query(collection(db, "favs"), where("userId", "==", currentUser.uid))
         getDocs(q).then(qs => {
             setFavImages(qs.docs.map(doc => doc.data()))

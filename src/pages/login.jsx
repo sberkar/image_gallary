@@ -21,7 +21,6 @@ export default function Login(){
             <title>Login - Colrs Image</title>
             <link rel="icon" href="/favicon.ico" />
         </Head>
-        <body>
             <Nav />
             <div className="flex flex-col items-center justify-center h-[75vh]">
                 <button onClick={() => handleLogin()} className="flex justify-center items-center px-4 py-2 shadow-2xl rounded border-2 border-[#6e6e6e3f]">
@@ -29,6 +28,5 @@ export default function Login(){
                 </button>
             </div>
             <Footer />
-        </body>
     </>
 }

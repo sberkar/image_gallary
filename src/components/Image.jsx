@@ -8,7 +8,6 @@ export default function ImageElement({ image, isLoggedIn, isFaved }){
     const [show, setShow] = useState("invisible")
     const [faved, setFaved] = useState(isFaved?.fav)
 
-    console.log(isFaved?.fav)
     const { currentUser } = useAuth()
 
     function handleFav(data, uid){
