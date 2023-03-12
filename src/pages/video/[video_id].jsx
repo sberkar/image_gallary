@@ -62,7 +62,6 @@ export default function ImageID(){
                 downloader.current.download = `${videoData.id}.mp4`
                 downloader.current.click()
                 URL.revokeObjectURL(href)
-                downloader.current.remove()
             }).catch(err => console.log(err))
         }).catch(err => console.log(err))
     }
@@ -110,7 +109,7 @@ export default function ImageID(){
                     </div>
                     <p className="my-2 font-medium">Likes - {videoData.likes}</p>
                     <p className="my-2 font-medium">Downloads - {videoData.downloads}</p>
-                    <p className="my-2 flex">{videoData.tags.split(",").map(tag => <a href={`/tag/${tag}`} key={tag} className="px-2 py-1 bg-slate-300 rounded-xl first:ml-0 mx-2 block">{tag}</a>)}</p>
+                    <p className="my-2 flex">{videoData.tags.split(",").map(tag => <a href={`/tag/video/${tag}`} key={tag} className="px-2 py-1 bg-slate-300 rounded-xl first:ml-0 mx-2 block">{tag}</a>)}</p>
                     <div className="p-4 my-8 bg-slate-100 rounded">
                         <a href="https://pixabay.com/service/terms/" className="text-xl hover:underline font-semibold">Pixabay License</a>
                         <p className="leading-[95%] text-slate-600">Free to use under the Pixabay license<br />

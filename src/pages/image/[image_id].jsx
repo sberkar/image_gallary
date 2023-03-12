@@ -62,7 +62,6 @@ export default function ImageID(){
                 downloader.current.download = url.replace(/^.*[\\\/]/, '');
                 downloader.current.click()
                 URL.revokeObjectURL(tempURL)
-                downloader.current.remove()
             }).catch(err => console.log(err))
         }).catch(err => console.log(err))
     }
